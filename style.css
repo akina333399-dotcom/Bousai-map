@@ -1,32 +1,19 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>吉田町防災マップ</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-</head>
-<body>
-  <h1>吉田町防災マップ</h1>
-  <div id="map"></div>
+body {
+  font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background: #f0f8ff;
+}
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>吉田町防災マップ</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-</head>
-<body>
-  <h1>吉田町防災マップ</h1>
-  <div id="map"></div>
+h1 {
+  background: #0078d7;
+  color: white;
+  padding: 15px;
+  margin: 0;
+}
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
+#map {
+  height: 90vh; /* 画面の90%の高さで地図を表示 */
+  width: 100%;
+}
