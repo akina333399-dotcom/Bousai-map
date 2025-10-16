@@ -6,6 +6,39 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18,
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
+// --- 地震・津波情報のリアルタイム取得 ---
+// 気象庁API（JSON）を使用
+async function loadEarthquakeData() {
+  const response = await fetch('https://www.jma.go.jp/bosai/quake/data/list.json');
+  const data = await response.json();
+
+  // 最新の地震情報だけ取得
+  const latest = data[0];
+  const detailUrl = `https://www.jma.go.jp/bosai/quake/data/${latest.json}`; 
+
+  // 詳細データを取得
+  const detailResponse = await fetch(detailUrl);
+  const detailData = await detailResponse.json();
+
+  // 緯度経度を取得してピンを追加
+  if (detailData && detailData.Body && detailData.Body.Earthquake) {
+    const lat = detailData.Body.Earthquake.Hypocenter.Latitude;
+    const lon = detailData.Body.Earthquake.Hypocenter.Longitude;
+    const mag = detailData.Body.Earthquake.Magnitude;
+    const name = detailData.Body.Earthquake.Hypocenter.Name;
+
+    // ピンを地図に追加
+    L.marker([lat, lon]).addTo(map)
+      .bindPopup(`<b>地震情報</b><br>${name}<br>マグニチュード: ${mag}`)
+      .openPopup();
+  }
+}
+
+// ページ読み込み時に実行
+loadEarthquakeData();
+
+// 5分ごとに最新情報を更新
+setInterval(loadEarthquakeData, 300000);
 
 // --- 避難所データ（例） ---
 const shelters = [
