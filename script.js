@@ -9,9 +9,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // --- 避難所データ（例） ---
 const shelters = [
-  { name: "吉田町総合体育館", lat: 34.744, lng: 138.255, capacity: 500 },
-  { name: "住吉小学校", lat: 34.751, lng: 138.262, capacity: 300 },
-  { name: "吉田中学校", lat: 34.739, lng: 138.247, capacity: 450 }
+  { name: "吉田町総合体育館", lat: 34.7687907, lng: 138.2544665, capacity: 1870 },
+  { name: "住吉小学校", lat: 34.75928775, lng: 138.25393645, capacity: 2620 },
+  { name: "吉田中学校", lat: 34.76935, lng: 138.25329, capacity: 1687 }
+  { name: "中央小", lat: 34.77104218, lng: 138.25966353, capacity: 2338 }
 ];
 
 // --- マーカーを地図に追加 ---
