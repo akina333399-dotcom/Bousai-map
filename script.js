@@ -55,19 +55,45 @@ async function loadTsunamiInfo() {
 // 10分ごとに確認
 setInterval(loadTsunamiInfo, 600000);
 
-// --- 避難所データ（例） ---
+// --- 避難所データ（日本語＋英語） ---
 const shelters = [
-  { name: "吉田町総合体育館", lat: 34.7687907, lng: 138.2544665, capacity: 1870 },
-  { name: "住吉小学校", lat: 34.75928775, lng: 138.25393645, capacity: 2620 },
-  { name: "吉田中学校", lat: 34.76935, lng: 138.25329, capacity: 1687 },
-  { name: "中央小", lat: 34.77104218, lng: 138.25966353, capacity: 2338 }
+  { 
+    name_ja: "吉田町総合体育館", 
+    name_en: "Yoshida Town Gymnasium", 
+    lat: 34.7687907, 
+    lng: 138.2544665, 
+    capacity: 1870 
+  },
+  { 
+    name_ja: "住吉小学校", 
+    name_en: "Sumiyoshi Elementary School", 
+    lat: 34.75928775, 
+    lng: 138.25393645, 
+    capacity: 2620 
+  },
+  { 
+    name_ja: "吉田中学校", 
+    name_en: "Yoshida Junior High School", 
+    lat: 34.76935, 
+    lng: 138.25329, 
+    capacity: 1687 
+  },
+  { 
+    name_ja: "中央小学校", 
+    name_en: "Chuo Elementary School", 
+    lat: 34.77104218, 
+    lng: 138.25966353, 
+    capacity: 2338 
+  }
 ];
 
-// --- マーカーを地図に追加 ---
+// --- マーカーを地図に追加（英語＋日本語） ---
 shelters.forEach(shelter => {
   const marker = L.marker([shelter.lat, shelter.lng]).addTo(map);
   marker.bindPopup(`
-    <b>${shelter.name}</b><br>
-    収容人数: ${shelter.capacity}人
+    <b>${shelter.name_ja}</b><br>
+    <i>${shelter.name_en}</i><br><br>
+    収容人数: ${shelter.capacity.toLocaleString()}人<br>
+    Capacity: ${shelter.capacity.toLocaleString()} people
   `);
 });
