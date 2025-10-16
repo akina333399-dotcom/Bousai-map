@@ -39,6 +39,19 @@ loadEarthquakeData();
 
 // 5分ごとに最新情報を更新
 setInterval(loadEarthquakeData, 300000);
+// --- 津波警報の取得 ---
+async function loadTsunamiInfo() {
+  const response = await fetch('https://www.jma.go.jp/bosai/tsunami/data/list.json');
+  const data = await response.json();
+
+  if (data && data.length > 0) {
+    const latest = data[0];
+    alert(`🌊 津波警報: ${latest.Title}`);
+  }
+}
+
+// 10分ごとに確認
+setInterval(loadTsunamiInfo, 600000);
 
 // --- 避難所データ（例） ---
 const shelters = [
