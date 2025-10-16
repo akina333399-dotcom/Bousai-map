@@ -6,6 +6,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18,
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
+
 // --- 地震・津波情報のリアルタイム取得 ---
 // 気象庁API（JSON）を使用
 async function loadEarthquakeData() {
