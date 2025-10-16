@@ -40,6 +40,7 @@ loadEarthquakeData();
 
 // 5分ごとに最新情報を更新
 setInterval(loadEarthquakeData, 300000);
+
 // --- 津波警報の取得 ---
 async function loadTsunamiInfo() {
   const response = await fetch('https://www.jma.go.jp/bosai/tsunami/data/list.json');
@@ -58,7 +59,7 @@ setInterval(loadTsunamiInfo, 600000);
 const shelters = [
   { name: "吉田町総合体育館", lat: 34.7687907, lng: 138.2544665, capacity: 1870 },
   { name: "住吉小学校", lat: 34.75928775, lng: 138.25393645, capacity: 2620 },
-  { name: "吉田中学校", lat: 34.76935, lng: 138.25329, capacity: 1687 }
+  { name: "吉田中学校", lat: 34.76935, lng: 138.25329, capacity: 1687 },
   { name: "中央小", lat: 34.77104218, lng: 138.25966353, capacity: 2338 }
 ];
 
