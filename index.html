@@ -13,4 +13,112 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
+  // --- 地図を吉田町の中心に固定して表示 ---
+const map = L.map('map').setView([34.746, 138.255], 13);
+
+// --- OpenStreetMap タイルを設定 ---
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// --- 現在地を取得してマップに表示 ---
+let userMarker;
+
+function showUserLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      // 現在地マーカーを作成（青色）
+      if (userMarker) {
+        userMarker.setLatLng([lat, lng]);
+      } else {
+        userMarker = L.marker([lat, lng], {
+          icon: L.icon({
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32]
+          })
+        }).addTo(map).bindPopup("📍 現在地 / Your Location").openPopup();
+      }
+
+      // 地図を現在地にズームイン
+      map.setView([lat, lng], 15);
+
+      // 一番近い避難所を探す
+      findNearestShelter(lat, lng);
+    }, error => {
+      alert("現在地を取得できませんでした。位置情報を許可してください。");
+    });
+  } else {
+    alert("この端末では位置情報が利用できません。");
+  }
+}
+
+// --- 2分ごとに現在地を更新 ---
+setInterval(showUserLocation, 120000);
+showUserLocation();
+
+// --- 避難所データ（A〜R＋ホテルプレストン）---
+const shelters = [
+  { name_ja: "津波避難タワーA", name_en: "Tsunami Evacuation Tower A", lat: 34.746319, lng: 138.247944, capacity: 500, type: "tower" },
+  { name_ja: "津波避難タワーB", name_en: "Tsunami Evacuation Tower B", lat: 34.750227, lng: 138.251965, capacity: 500, type: "tower" },
+  { name_ja: "津波避難タワーC", name_en: "Tsunami Evacuation Tower C", lat: 34.751166, lng: 138.256964, capacity: 1100, type: "tower" },
+  { name_ja: "津波避難タワーD", name_en: "Tsunami Evacuation Tower D", lat: 34.754471, lng: 138.259400, capacity: 900, type: "tower" },
+  { name_ja: "津波避難タワーG", name_en: "Tsunami Evacuation Tower G", lat: 34.760645, lng: 138.271097, capacity: 700, type: "tower" },
+  { name_ja: "津波避難タワーK", name_en: "Tsunami Evacuation Tower K", lat: 34.755232, lng: 138.254129, capacity: 1200, type: "tower" },
+  { name_ja: "津波避難タワーP", name_en: "Tsunami Evacuation Tower P", lat: 34.753871, lng: 138.248147, capacity: 1300, type: "tower" },
+  { name_ja: "ホテルプレストンYOSHIDA（屋上・非常階段）", name_en: "Hotel Preston YOSHIDA (Roof & Stairs)", lat: 34.765695, lng: 138.251411, capacity: 517, type: "shelter" },
+  { name_ja: "吉田町立住吉小学校（屋上）", name_en: "Sumiyoshi Elementary School (Roof Shelter)", lat: 34.7695107, lng: 138.2530098, capacity: 1560, type: "shelter" }
+];
+
+// --- 避難所マーカーを追加 ---
+const shelterMarkers = [];
+shelters.forEach(shelter => {
+  const iconColor = shelter.type === "tower" ? "blue" : "green";
+  const icon = L.icon({
+    iconUrl: `https://maps.google.com/mapfiles/ms/icons/${iconColor}-dot.png`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32]
+  });
+
+  const marker = L.marker([shelter.lat, shelter.lng], { icon }).addTo(map);
+  marker.bindPopup(`
+    <b>${shelter.name_ja}</b><br>
+    <i>${shelter.name_en}</i><br>
+    👥 ${shelter.capacity.toLocaleString()}人<br>
+    Capacity: ${shelter.capacity.toLocaleString()} people
+  `);
+  shelterMarkers.push({ ...shelter, marker });
+});
+
+// --- 最も近い避難所を探す関数 ---
+function findNearestShelter(userLat, userLng) {
+  let nearest = null;
+  let minDistance = Infinity;
+
+  shelters.forEach(shelter => {
+    const distance = getDistance(userLat, userLng, shelter.lat, shelter.lng);
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearest = shelter;
+    }
+  });
+
+  if (nearest) {
+    L.polyline([[userLat, userLng], [nearest.lat, nearest.lng]], { color: 'red' }).addTo(map);
+    alert(`🚨 現在地から最も近い避難場所は「${nearest.name_ja}」です。\n距離：約${minDistance.toFixed(2)} km`);
+  }
+}
+
+// --- 2点間の距離（km）を求める関数 ---
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
 </html>
