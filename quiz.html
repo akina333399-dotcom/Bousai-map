@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>防災クイズ</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin: 50px; }
+    button { margin: 10px; padding: 10px 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>防災クイズ</h1>
+  <p>地震が起きたとき、まず何をするべき？</p>
+  <button onclick="checkAnswer('A')">A: 外に飛び出す</button>
+  <button onclick="checkAnswer('B')">B: 机の下に隠れる</button>
+
+  <p id="result"></p>
+
+  <script>
+    function checkAnswer(answer) {
+      const result = document.getElementById("result");
+      if (answer === 'B') {
+        result.textContent = "正解！まずは身の安全を確保しましょう。";
+      } else {
+        result.textContent = "不正解…外は危険です。落下物に注意！";
+      }
+    }
+  </script>
+
+  <p><a href="index.html">← 防災マップに戻る</a></p>
+</body>
+</html>
