@@ -1,5 +1,9 @@
-// --- 地図を表示する設定 ---
-const map = L.map('map').setView([34.746, 138.255], 13); // 吉田町の中心付近
+const map = L.map('map', {
+  center: [34.746, 138.255],
+  zoom: 13,
+  minZoom: 12, // 吉田町より外に行けないように
+  maxBounds: [[34.70, 138.20], [34.79, 138.30]] // 吉田町周辺の範囲
+});
 
 // --- OpenStreetMapを表示するタイルレイヤーを設定 ---
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
