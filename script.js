@@ -98,4 +98,13 @@ const map = L.map('map', {
 });
 
 // --- 回転コントロールボタンを追加 ---
+// 吉田町周辺のみ表示できるよう制限
+const bounds = L.latLngBounds(
+  [34.70, 138.22], // 南西端
+  [34.80, 138.29]  // 北東端
+);
+map.setMaxBounds(bounds);
+map.on('drag', function() {
+  map.panInsideBounds(bounds, { animate: false });
+});
 L.control.rotate({ position: 'topright' }).addTo(map);
