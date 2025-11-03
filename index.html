@@ -2,11 +2,25 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>吉田町防災マップ</title>
+  <title>吉田町 防災マップ</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
 </head>
 <body>
+  <h1>吉田町 防災マップ</h1>
+
+  <div id="map" style="height: 500px;"></div>
+
+  <!-- 🌟ここにボタンを追加します！ -->
+  <div style="margin-top: 20px; text-align: center;">
+    <button onclick="window.location.href='quiz.html'">防災クイズへ</button>
+    <button onclick="window.location.href='goods.html'">防災グッズページへ</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
   <h1>吉田町防災マップ</h1>
   <div id="map"></div>
 
