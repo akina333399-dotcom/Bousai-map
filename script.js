@@ -88,3 +88,14 @@ shelters.forEach(shelter => {
     🔗 出典 / Source: ${shelter.source}
   `);
 });
+// --- 地図を表示する設定 ---
+const map = L.map('map', {
+  center: [34.746, 138.255],
+  zoom: 13,
+  zoomControl: true,
+  rotate: true,          // ← 回転機能をONにする！
+  touchRotate: true,     // ← スマホ操作でも回転できるようにする
+});
+
+// --- 回転コントロールボタンを追加 ---
+L.control.rotate({ position: 'topright' }).addTo(map);
