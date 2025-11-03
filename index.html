@@ -1,26 +1,41 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
   <title>吉田町 防災マップ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Leaflet本体 -->
+  <!-- ✅ Leaflet最新版 -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
   />
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-  <!-- Leaflet Rotateプラグイン -->
+  <!-- ✅ Leaflet Rotateプラグイン（最新版URLに修正） -->
   <script src="https://unpkg.com/leaflet-rotate@0.2.1/dist/leaflet-rotate.min.js"></script>
 
-  <!-- CSS -->
+  <!-- ✅ CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
-  
 <body>
+  <h1 style="background-color:#0078ff; color:white; padding:10px; text-align:center;">
+    吉田町 防災マップ
+  </h1>
+
+  <!-- ✅ 地図本体 -->
+  <div id="map"></div>
+
+  <!-- ✅ ページ切り替えボタン -->
+  <div style="margin-top: 10px; text-align: center;">
+    <button onclick="window.location.href='quiz.html'">防災クイズへ</button>
+    <button onclick="window.location.href='goods.html'">防災グッズページへ</button>
+  </div>
+
+  <!-- ✅ JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
   <h1>吉田町 防災マップ</h1>
 
   <div id="map" style="height: 500px;"></div>
