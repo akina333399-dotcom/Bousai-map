@@ -90,21 +90,18 @@ shelters.forEach(shelter => {
 });
 // --- 地図を表示する設定 ---
 const map = L.map('map', {
-  center: [34.746, 138.255],
+  center: [34.746, 138.255], // 吉田町中心
   zoom: 13,
   zoomControl: true,
-  rotate: true,          // ← 回転機能をONにする！
-  touchRotate: true,     // ← スマホ操作でも回転できるようにする
+  rotate: true,        // 回転を有効化
+  touchRotate: true    // スマホでの回転を有効化
 });
 
-// --- 回転コントロールボタンを追加 ---
-// 吉田町周辺のみ表示できるよう制限
-const bounds = L.latLngBounds(
-  [34.70, 138.22], // 南西端
-  [34.80, 138.29]  // 北東端
-);
-map.setMaxBounds(bounds);
-map.on('drag', function() {
-  map.panInsideBounds(bounds, { animate: false });
-});
+// --- タイルレイヤー（地図画像） ---
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// --- 回転ボタンを右上に追加 ---
 L.control.rotate({ position: 'topright' }).addTo(map);
