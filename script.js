@@ -1,51 +1,5 @@
-const map = L.map('map', {
-  center: [34.746, 138.255],
-  zoom: 13,
-  minZoom: 12, // 吉田町より外に行けないように
-  maxBounds: [[34.70, 138.20], [34.79, 138.30]] // 吉田町周辺の範囲
-});
 
-// --- OpenStreetMapを表示するタイルレイヤーを設定 ---
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 18,
-  attribution: '© OpenStreetMap contributors'
-}).addTo(map);
-
-// --- 地震・津波情報のリアルタイム取得 ---
-// 気象庁API（JSON）を使用
-async function loadEarthquakeData() {
-  const response = await fetch('https://www.jma.go.jp/bosai/quake/data/list.json');
-  const data = await response.json();
-
-  // 最新の地震情報だけ取得
-  const latest = data[0];
-  const detailUrl = `https://www.jma.go.jp/bosai/quake/data/${latest.json}`; 
-
-  // 詳細データを取得
-  const detailResponse = await fetch(detailUrl);
-  const detailData = await detailResponse.json();
-
-  // 緯度経度を取得してピンを追加
-  if (detailData && detailData.Body && detailData.Body.Earthquake) {
-    const lat = detailData.Body.Earthquake.Hypocenter.Latitude;
-    const lon = detailData.Body.Earthquake.Hypocenter.Longitude;
-    const mag = detailData.Body.Earthquake.Magnitude;
-    const name = detailData.Body.Earthquake.Hypocenter.Name;
-
-    // ピンを地図に追加
-    L.marker([lat, lon]).addTo(map)
-      .bindPopup(`<b>地震情報</b><br>${name}<br>マグニチュード: ${mag}`)
-      .openPopup();
-  }
-}
-
-// ページ読み込み時に実行
-loadEarthquakeData();
-
-// 5分ごとに最新情報を更新
-setInterval(loadEarthquakeData, 300000);
-
-// --- 避難場所データ（津波避難タワーA〜R + ホテルプレストンYOSHIDA）---
+// --- 避難場所データ（津波避難タワーA〜R + ホテルプレストン）---
 const shelters = [
   { name_ja: "津波避難タワーA", name_en: "Tsunami Evacuation Tower A", address_ja: "住吉4403-6地先", address_en: "Near 4403-6 Sumiyoshi", lat: 34.746319, lng: 138.247944, capacity: 500, source: "町PDF／Navitime・Yahoo", type: "tower" },
   { name_ja: "津波避難タワーB", name_en: "Tsunami Evacuation Tower B", address_ja: "住吉3254-6地先", address_en: "Near 3254-6 Sumiyoshi", lat: 34.750227, lng: 138.251965, capacity: 500, source: "町PDF／Navitime", type: "tower" },
@@ -57,17 +11,24 @@ const shelters = [
   { name_ja: "津波避難タワーH", name_en: "Tsunami Evacuation Tower H", address_ja: "川尻2918", address_en: "2918 Kawashiri", lat: 34.7622, lng: 138.2735, capacity: 800, source: "町PDF（人数）", type: "tower" },
   { name_ja: "レック㈱ 吉田防災倉庫", name_en: "Rek Co. Yoshida Disaster Warehouse", address_ja: "川尻3308", address_en: "3308 Kawashiri", lat: 34.7638, lng: 138.2750, capacity: 1000, source: "町PDF／位置図", type: "tower" },
   { name_ja: "津波避難タワーJ", name_en: "Tsunami Evacuation Tower J", address_ja: "住吉3365-1", address_en: "3365-1 Sumiyoshi", lat: 34.7539, lng: 138.2502, capacity: 800, source: "町PDF／Navitime", type: "tower" },
-  { name_ja: "津波避難タワーK", name_en: "Tsunami Evacuation Tower K", address_ja: "住吉2868-3地先", address_en: "Near 2868-3 Sumiyoshi", lat: 34.755232, lng: 138.254129, capacity: 1200, source: "町PDF／Navitime／bosai-map", type: "tower" },
-  { name_ja: "津波避難タワーL", name_en: "Tsunami Evacuation Tower L", address_ja: "住吉5525-1地先", address_en: "Near 5525-1 Sumiyoshi", lat: 34.7588, lng: 138.2662, capacity: 800, source: "町PDF／位置図", type: "tower" },
-  { name_ja: "津波避難タワーM", name_en: "Tsunami Evacuation Tower M", address_ja: "片岡1697-1", address_en: "1697-1 Kataoka", lat: 34.7701, lng: 138.2615, capacity: 1000, source: "町PDF／位置図", type: "tower" },
-  { name_ja: "川尻会館（2階・屋上）", name_en: "Kawashiri Community Hall (2F & Roof)", address_ja: "川尻1623", address_en: "1623 Kawashiri", lat: 34.7613, lng: 138.2693, capacity: 1600, source: "町PDF／位置図", type: "tower" },
-  { name_ja: "津波避難タワーO", name_en: "Tsunami Evacuation Tower O", address_ja: "川尻2743-1", address_en: "2743-1 Kawashiri", lat: 34.7627, lng: 138.2724, capacity: 500, source: "町PDF／位置図", type: "tower" },
-  { name_ja: "津波避難タワーP", name_en: "Tsunami Evacuation Tower P", address_ja: "住吉2649-2", address_en: "2649-2 Sumiyoshi", lat: 34.753871, lng: 138.248147, capacity: 1300, source: "町PDF／Navitime／Yahoo", type: "tower" },
-  { name_ja: "吉田町立住吉小学校（屋上）", name_en: "Sumiyoshi Elementary School (Roof Shelter)", address_ja: "住吉2223", address_en: "2223 Sumiyoshi", lat: 34.7695107, lng: 138.2530098, capacity: 1560, source: "町PDF／地図データ", type: "shelter" },
   { name_ja: "津波避難タワーR", name_en: "Tsunami Evacuation Tower R", address_ja: "住吉2143-1", address_en: "2143-1 Sumiyoshi", lat: 34.7680, lng: 138.2525, capacity: 800, source: "町PDF／位置図", type: "tower" },
-  { name_ja: "ホテルプレストンYOSHIDA（避難場所：屋上・非常階段）", name_en: "Hotel Preston YOSHIDA (Evacuation: Roof & Stairs)", address_ja: "住吉580", address_en: "580 Sumiyoshi", lat: 34.765695, lng: 138.251411, capacity: 517, source: "町PDF／ホテル公式／Navitime", type: "shelter" }
+  { name_ja: "ホテルプレストンYOSHIDA（避難場所）", name_en: "Hotel Preston YOSHIDA (Evacuation Site)", address_ja: "住吉580", address_en: "580 Sumiyoshi", lat: 34.765695, lng: 138.251411, capacity: 517, source: "町PDF／ホテル公式／Navitime", type: "shelter" }
 ];
 
+// --- 地図を吉田町中心に作成 ---
+const map = L.map('map', {
+  center: [34.746, 138.255],
+  zoom: 14,
+  zoomControl: true
+});
+
+// --- OpenStreetMapタイルを追加 ---
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// --- 避難所マーカーを追加 ---
 shelters.forEach(shelter => {
   const iconColor = shelter.type === "tower" ? "blue" : "green";
   const icon = L.icon({
@@ -88,20 +49,46 @@ shelters.forEach(shelter => {
     🔗 出典 / Source: ${shelter.source}
   `);
 });
-// --- 地図を表示する設定 ---
-const map = L.map('map', {
-  center: [34.746, 138.255], // 吉田町中心
-  zoom: 13,
-  zoomControl: true,
-  rotate: true,        // 回転を有効化
-  touchRotate: true    // スマホでの回転を有効化
-});
 
-// --- タイルレイヤー（地図画像） ---
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 18,
-  attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+// --- 現在地を取得 ---
+if ("geolocation" in navigator) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
 
-// --- 回転ボタンを右上に追加 ---
-L.control.rotate({ position: 'topright' }).addTo(map);
+      // 現在地マーカーを追加
+      const userMarker = L.marker([lat, lng], {
+        title: "あなたの現在地 / Your location"
+      }).addTo(map);
+      userMarker.bindPopup("📍あなたの現在地 / Your location").openPopup();
+
+      // 最も近い避難所を計算
+      let nearest = null;
+      let minDistance = Infinity;
+
+      shelters.forEach(shelter => {
+        const distance = map.distance([lat, lng], [shelter.lat, shelter.lng]);
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearest = shelter;
+        }
+      });
+
+      // 結果を線とアラートで表示
+      if (nearest) {
+        L.polyline([[lat, lng], [nearest.lat, nearest.lng]], {
+          color: "blue",
+          dashArray: "5,10"
+        }).addTo(map);
+
+        alert(`最も近い避難所は「${nearest.name_ja}」です。\nThe nearest shelter is ${nearest.name_en}.`);
+      }
+    },
+    (error) => {
+      alert("現在地を取得できませんでした / Unable to access your location.");
+    }
+  );
+} else {
+  alert("このブラウザでは現在地機能が使えません / Geolocation not supported.");
+}
