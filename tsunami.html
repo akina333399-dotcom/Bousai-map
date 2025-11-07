@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>南海トラフ津波想定マップ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Leaflet 読み込み -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+  <!-- CSS -->
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    h1 {
+      background: #0055cc;
+      color: white;
+      padding: 10px;
+    }
+    #map {
+      height: 90vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌊 南海トラフ津波想定マップ</h1>
+
+  <div id="map"></div>
+
+  <div style="margin: 10px;">
+    <button onclick="window.location.href='index.html'">⬅ 通常マップへ戻る</button>
+  </div>
+
+  <script src="tsunami.js"></script>
+</body>
+</html>
