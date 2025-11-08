@@ -1,44 +1,49 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>南海トラフ津波想定マップ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Leaflet 読み込み -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-  />
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-
-  <!-- CSS -->
+  <meta charset="UTF-8">
+  <title>南海トラフ津波想定マップ（吉田町）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      margin: 0;
       font-family: sans-serif;
       text-align: center;
+      background-color: #f0f8ff;
+      margin: 0;
+      padding: 0;
     }
     h1 {
-      background: #0055cc;
+      background-color: #0078ff;
       color: white;
       padding: 10px;
+      margin: 0;
     }
-    #map {
-      height: 90vh;
-      width: 100%;
+    img {
+      width: 95%;
+      max-width: 900px;
+      margin-top: 15px;
+      border: 3px solid #0078ff;
+      border-radius: 10px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0078ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>🌊 南海トラフ津波想定マップ</h1>
+  <h1>南海トラフ巨大地震 津波想定マップ（吉田町）</h1>
+  <p>※出典：吉田町公式ハザードマップ／静岡県想定データより</p>
 
-  <div id="map"></div>
+  <img src="tsunami_map.jpg" alt="吉田町津波想定マップ">
 
-  <div style="margin: 10px;">
-    <button onclick="window.location.href='index.html'">⬅ 通常マップへ戻る</button>
-  </div>
-
-  <script src="tsunami.js"></script>
+  <br>
+  <button onclick="window.location.href='index.html'">防災マップに戻る</button>
 </body>
 </html>
